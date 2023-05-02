@@ -9,7 +9,7 @@ schema_view = get_schema_view(
         title='Empact API',
         default_version='v1',
         description='Api endpoints for Empact',
-        contact=openapi.Contact(email="mavenwechuli@gmail.com",name='Maven Wechuli'),
+        contact=openapi.Contact(email="betwelmusin@gmail.com",name='bethwel musin'),
     ),
     public=True,
     # permission_classes=[permissions.AllowAny],

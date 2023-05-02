@@ -12,9 +12,14 @@ from blog.models import *
 from authentication.models import EmpactUser
 from utilities.decorators import resource_checker
 from utilities.error_serializer import ErrorSerializer
+from rest_framework import generics
+
+from .serializers import LikeSerializer
 
 
 # Create your views here.
+
+
 
 
 class GetAllPublishedBlogApiView(APIView):
@@ -324,5 +329,30 @@ class CommentDetailApiView(APIView):
             'status_code': status.HTTP_206_PARTIAL_CONTENT,
             'errors': serializer.errors
         })
+
+
+
+
+
+class CreateLikeView(generics.CreateAPIView):
+    serializer_class = LikeSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user, post=self.post)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        like = serializer.save()
+        serializer = LikeSerializer(like)
+        return Response({
+
+            "status":True, 
+            "message":'liked', 
+            'status_code': status.HTTP_200_OK,
+            "data":serializer.data
+            
+            })
 
 

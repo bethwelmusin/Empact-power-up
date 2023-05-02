@@ -7,7 +7,7 @@ from utilities.decorators import resource_checker
 
 from utilities.error_serializer import ErrorSerializer
 
-from community.serializers import*
+from community.serializers import *
 from community.models import *
 
 from django.utils import timezone
@@ -48,14 +48,15 @@ class CommunityApiView(APIView):
         operation_description=' An api endpoint to create a new communities'
     )
     @resource_checker(EmpactUser)
-    def post(self,request,userId):
+    def post(self,request):
         serializer = AddCommunitySerializer(data=request.data)
         if serializer.is_valid():
             community_name = request.data.get('community_name')
+            community_img = request.data.get('community_img')
             community_description = request.data.get('community_description')
             country = request.data.get('country')
-            user=EmpactUser.objects.get(id=userId)
-            community= Community.objects.create(community_name=community_name,community_description=community_description,country=country,community_admin=user)
+            # user=EmpactUser.objects.get(id=userId)
+            community= Community.objects.create(community_name=community_name,community_description=community_description,country=country,community_admin=user,community_img=community_img)
             serializer = CommunitySerializer(community)
             return Response({
                     'status': True,
@@ -109,12 +110,15 @@ class PatchCommunityApiView(APIView):
         serializer = PatchCommunitySerializer(data=request.data)
         if serializer.is_valid():
             community_name = request.data.get('community_name')
+            community_img = request.data.get('community_img')
             community_description = request.data.get('community_description')
             country = request.data.get('country')
             
             community= Community.objects.filter(community_id=communityId).get()
             if community_name is not None:
                 community.community_name=community_name
+            if community_img is not None:
+                community.community_img=community_img
             if community_description is not None:
                 community.community_description=community_description
             if country is not None:
@@ -159,6 +163,7 @@ class AddProjectApiView(APIView):
         if serializer.is_valid():
             community = Community.objects.filter(community_id=communityId).get()
             project_name = request.data.get('project_name')
+
             project_description = request.data.get('project_description')
             project_coodinator = request.data.get('project_coodinator_id')
             lifes_impacted = request.data.get('lifes_impacted')

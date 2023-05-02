@@ -36,7 +36,7 @@ class CommunitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Community
-        fields = ['community_id', 'community_name','community_admin', 'community_description','verified', 'country','membersCount', 'members','projectsCount','projects','created_at']
+        fields = ['community_id', 'community_name','community_img','community_admin', 'community_description','verified', 'country','membersCount', 'members','projectsCount','projects','created_at']
 
     def get_projects(self,obj):
         proj = Project.objects.filter(community__community_id=obj.community_id).all()
@@ -45,12 +45,14 @@ class CommunitySerializer(serializers.ModelSerializer):
 
 class AddCommunitySerializer(serializers.Serializer):
     community_name = serializers.CharField(required=True)
+    community_img = serializers.ImageField(required=True)
     community_description = serializers.CharField(required=True)
     country = serializers.CharField(required=True)
     community_admin = serializers.CharField(required=True)
 
 class PatchCommunitySerializer(serializers.Serializer):
     community_name = serializers.CharField(required=False)
+    community_img = serializers.ImageField(required=True)
     community_description = serializers.CharField(required=False)
     country = serializers.CharField(required=False)
 

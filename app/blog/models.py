@@ -35,6 +35,22 @@ class Post(models.Model):
         return 
 
 
+
+
+
+class Like(models.Model):
+    user = models.ForeignKey(EmpactUser, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="like_post")
+    is_deleted = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_user_like_count(self):
+        return Like.objects.filter(user=self.user).count()
+
+    def get_post_likes_count(self):
+        return Like.objects.filter(post=self.post).count()
+
+
 class Comment(models.Model):
     comment_id=models.AutoField(primary_key=True,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)

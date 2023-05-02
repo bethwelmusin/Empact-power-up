@@ -5,9 +5,16 @@ from blog.views import (
     BlogDetailApiView,
     CommentDetailApiView,
     AddPostCommentApiView,
+    CreateLikeView
    
 
 )
+
+
+
+
+
+
 
 app_name='blog'
 urlpatterns = [
@@ -20,6 +27,7 @@ urlpatterns = [
     path('get-post-comments/<str:postId>/', AddPostCommentApiView.as_view(), name='get-post-comments'),
 
     path('comment-detail/<str:commentId>/', CommentDetailApiView.as_view(), name='comment'),
+    path('like/', CreateLikeView.as_view(), name='create_like'),
     # path('patch-comment/<str:commentId>/', CommentDetailApiView.as_view(), name='patch-comment'),
 
     
